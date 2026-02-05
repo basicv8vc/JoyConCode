@@ -7,6 +7,7 @@ struct MenuBarView: View {
     @ObservedObject var joyConManager: JoyConManager
 
     @State private var showSettings = false
+    @State private var showDetails = false
 
     private var joyConStatusText: String {
         if joyConManager.connectedCount > 1 {
@@ -35,17 +36,23 @@ struct MenuBarView: View {
 
             Divider()
 
-            // Enable/Disable Toggle (master gate)
-            Toggle(isOn: $settings.isEnabled) {
-                HStack {
-                    Image(systemName: settings.isEnabled ? "checkmark.circle.fill" : "circle")
-                        .foregroundColor(settings.isEnabled ? .green : .secondary)
-                    Text(settings.isEnabled ? "Enabled" : "Disabled")
-                }
-            }
-            .toggleStyle(.switch)
-
             VStack(alignment: .leading, spacing: 10) {
+                MenuToggleRow(
+                    icon: settings.isEnabled ? "checkmark.circle.fill" : "circle",
+                    iconColor: settings.isEnabled ? .green : .secondary,
+                    title: settings.isEnabled ? "Enabled" : "Disabled",
+                    isOn: $settings.isEnabled,
+                    tint: .green
+                )
+
+                MenuToggleRow(
+                    icon: "waveform.path",
+                    iconColor: .secondary,
+                    title: "Rumble Feedback",
+                    isOn: $settings.joyConRumbleEnabled,
+                    tint: .accentColor
+                )
+
                 HStack {
                     Button("Test Rumble") {
                         joyConManager.rumbleOnce()
@@ -56,61 +63,67 @@ struct MenuBarView: View {
 
                     Spacer()
 
-                    Text(joyConStatusText)
-                        .font(.caption)
-                        .foregroundColor(joyConManager.isConnected ? .green : .secondary)
+                    StatusBadge(
+                        text: joyConStatusText,
+                        color: joyConManager.isConnected ? .green : .secondary
+                    )
                 }
             }
 
-            // Status Section
-            GroupBox {
-                VStack(alignment: .leading, spacing: 8) {
-                    StatusRow(
-                        icon: "gamecontroller",
-                        title: "Joy-Con",
-                        status: joyConStatusText,
-                        color: joyConManager.isConnected ? .green : .secondary
-                    )
-
-                    StatusRow(
-                        icon: "rectangle.3.group",
-                        title: "Background",
-                        status: joyConManager.backgroundEventsEnabled ? "Monitoring On" : "Monitoring Off",
-                        color: joyConManager.backgroundEventsEnabled ? .secondary : .orange
-                    )
-
-                    if !joyConManager.controllerProfilesDescription.isEmpty {
+            DisclosureGroup(isExpanded: $showDetails) {
+                GroupBox {
+                    VStack(alignment: .leading, spacing: 8) {
                         StatusRow(
-                            icon: "info.circle",
-                            title: "Profile",
-                            status: joyConManager.controllerProfilesDescription,
+                            icon: "gamecontroller",
+                            title: "Joy-Con",
+                            status: joyConStatusText,
+                            color: joyConManager.isConnected ? .green : .secondary
+                        )
+
+                        StatusRow(
+                            icon: "rectangle.3.group",
+                            title: "Background",
+                            status: joyConManager.backgroundEventsEnabled ? "Monitoring On" : "Monitoring Off",
+                            color: joyConManager.backgroundEventsEnabled ? .secondary : .orange
+                        )
+
+                        if !joyConManager.controllerProfilesDescription.isEmpty {
+                            StatusRow(
+                                icon: "info.circle",
+                                title: "Profile",
+                                status: joyConManager.controllerProfilesDescription,
+                                color: .secondary
+                            )
+                        }
+
+                        StatusRow(
+                            icon: "waveform.path.ecg",
+                            title: "Raw Input",
+                            status: joyConManager.lastRawElementDescription.isEmpty ? "No events received" : joyConManager.lastRawElementDescription,
                             color: .secondary
                         )
-                    }
 
-                    StatusRow(
-                        icon: "waveform.path.ecg",
-                        title: "Raw Input",
-                        status: joyConManager.lastRawElementDescription.isEmpty ? "No events received" : joyConManager.lastRawElementDescription,
-                        color: .secondary
-                    )
-
-                    StatusRow(
-                        icon: "dot.radiowaves.left.and.right",
-                        title: "Last Input",
-                        status: joyConManager.lastInputDescription.isEmpty ? "—" : joyConManager.lastInputDescription,
-                        color: .secondary
-                    )
-
-                    if !keyboardSimulator.lastKeyPressed.isEmpty {
                         StatusRow(
-                            icon: "keyboard",
-                            title: "Last Action",
-                            status: keyboardSimulator.lastKeyPressed,
-                            color: .purple
+                            icon: "dot.radiowaves.left.and.right",
+                            title: "Last Input",
+                            status: joyConManager.lastInputDescription.isEmpty ? "—" : joyConManager.lastInputDescription,
+                            color: .secondary
                         )
+
+                        if !keyboardSimulator.lastKeyPressed.isEmpty {
+                            StatusRow(
+                                icon: "keyboard",
+                                title: "Last Action",
+                                status: keyboardSimulator.lastKeyPressed,
+                                color: .purple
+                            )
+                        }
                     }
                 }
+            } label: {
+                Text("Details")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
 
             if joyConManager.hasUnknownMicroGamepadSide {
@@ -185,6 +198,45 @@ struct StatusRow: View {
                 .foregroundColor(color)
         }
         .font(.caption)
+    }
+}
+
+struct StatusBadge: View {
+    let text: String
+    let color: Color
+
+    var body: some View {
+        Text(text)
+            .font(.caption)
+            .foregroundColor(color)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(color.opacity(0.12))
+            .clipShape(Capsule())
+    }
+}
+
+struct MenuToggleRow: View {
+    let icon: String
+    let iconColor: Color
+    let title: String
+    @Binding var isOn: Bool
+    let tint: Color
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Image(systemName: icon)
+                .foregroundColor(iconColor)
+                .frame(width: 20)
+            Text(title)
+            Spacer()
+            Toggle("", isOn: $isOn)
+                .labelsHidden()
+                .toggleStyle(.switch)
+                .tint(tint)
+                .accessibilityLabel(title)
+        }
+        .font(.callout)
     }
 }
 
