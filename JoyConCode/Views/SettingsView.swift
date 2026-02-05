@@ -17,11 +17,6 @@ struct SettingsView: View {
                 Text("Joy-Con")
                     .font(.headline)
 
-                Toggle(isOn: $settings.joyConEnabled) {
-                    Text("Enable Joy-Con Input")
-                }
-                .toggleStyle(.switch)
-
                 Toggle(isOn: $settings.joyConRumbleEnabled) {
                     Text("Rumble Feedback")
                 }
@@ -48,6 +43,10 @@ struct SettingsView: View {
                 Text("Tip: While the mapping window is open, Joy-Con input won't send keystrokes to other apps.")
                     .font(.caption2)
                     .foregroundColor(.secondary)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
 
             Divider()

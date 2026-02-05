@@ -10,7 +10,6 @@ class AppSettings: ObservableObject {
     // Keys for UserDefaults
     private enum Keys {
         static let isEnabled = "isEnabled"
-        static let joyConEnabled = "joyConEnabled"
         static let joyConRumbleEnabled = "joyConRumbleEnabled"
         static let joyConRumbleStrength = "joyConRumbleStrength"
         static let joyConBindings = "joyConBindings"
@@ -21,13 +20,6 @@ class AppSettings: ObservableObject {
     @Published var isEnabled: Bool {
         didSet {
             defaults.set(isEnabled, forKey: Keys.isEnabled)
-        }
-    }
-
-    /// Whether Joy-Con input is enabled
-    @Published var joyConEnabled: Bool {
-        didSet {
-            defaults.set(joyConEnabled, forKey: Keys.joyConEnabled)
         }
     }
 
@@ -65,7 +57,6 @@ class AppSettings: ObservableObject {
     private init() {
         // Load saved values or use defaults
         self.isEnabled = defaults.object(forKey: Keys.isEnabled) as? Bool ?? false
-        self.joyConEnabled = defaults.object(forKey: Keys.joyConEnabled) as? Bool ?? false
         self.joyConRumbleEnabled = defaults.object(forKey: Keys.joyConRumbleEnabled) as? Bool ?? true
         self.joyConRumbleStrength = defaults.object(forKey: Keys.joyConRumbleStrength) as? Double ?? 0.6
 
@@ -93,7 +84,6 @@ class AppSettings: ObservableObject {
     /// Reset all settings to defaults
     func resetToDefaults() {
         isEnabled = false
-        joyConEnabled = false
         joyConRumbleEnabled = true
         joyConRumbleStrength = 0.6
         joyConBindings = [:]

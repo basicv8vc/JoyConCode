@@ -46,25 +46,13 @@ struct MenuBarView: View {
             .toggleStyle(.switch)
 
             VStack(alignment: .leading, spacing: 10) {
-                Toggle(isOn: $settings.joyConEnabled) {
-                    Text("Enable Joy-Con Input")
-                }
-                .toggleStyle(.switch)
-                .disabled(!settings.isEnabled)
-
-                Toggle(isOn: $settings.joyConRumbleEnabled) {
-                    Text("Rumble Feedback")
-                }
-                .toggleStyle(.switch)
-                .disabled(!settings.isEnabled || !settings.joyConEnabled)
-
                 HStack {
                     Button("Test Rumble") {
                         joyConManager.rumbleOnce()
                     }
                     .buttonStyle(.bordered)
                     .controlSize(.small)
-                    .disabled(!settings.isEnabled || !settings.joyConEnabled || !joyConManager.isConnected || !settings.joyConRumbleEnabled)
+                    .disabled(!settings.isEnabled || !joyConManager.isConnected || !settings.joyConRumbleEnabled)
 
                     Spacer()
 
@@ -114,10 +102,9 @@ struct MenuBarView: View {
                 )
             }
 
-            Divider()
-
             // Settings Panel
             if showSettings {
+                Divider()
                 SettingsView(settings: settings, joyConManager: joyConManager)
             }
 

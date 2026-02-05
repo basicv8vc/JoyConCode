@@ -45,7 +45,7 @@ class JoyConManager: ObservableObject {
 
     func rumbleOnce() {
         guard !isInMappingMode else { return }
-        guard settings.isEnabled, settings.joyConEnabled, settings.joyConRumbleEnabled else { return }
+        guard settings.isEnabled, settings.joyConRumbleEnabled else { return }
         for controller in joyCons {
             playRumble(on: controller)
         }
@@ -174,12 +174,13 @@ class JoyConManager: ObservableObject {
         // Mapping mode: never emit key events or rumble.
         guard !isInMappingMode else { return }
 
-        guard settings.isEnabled, settings.joyConEnabled else { return }
-        guard let chord = settings.joyConBindingsV2[bindingKey] else { return }
+        guard settings.isEnabled else { return }
 
-        DispatchQueue.main.async {
-            self.lastInputDescription = "\(bindingKey.displayName): \(chord.displayString())"
-            self.onKeyChord?(chord)
+        if let chord = settings.joyConBindingsV2[bindingKey] {
+            DispatchQueue.main.async {
+                self.lastInputDescription = "\(bindingKey.displayName): \(chord.displayString())"
+                self.onKeyChord?(chord)
+            }
         }
 
         if settings.joyConRumbleEnabled {

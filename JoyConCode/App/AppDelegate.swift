@@ -65,10 +65,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func setupStatusIconObserver() {
-        Publishers.CombineLatest3(settings.$isEnabled, settings.$joyConEnabled, joyConManager.$isConnected)
+        Publishers.CombineLatest(settings.$isEnabled, joyConManager.$isConnected)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isEnabled, joyConEnabled, isConnected in
-                self?.updateStatusIcon(active: isEnabled && joyConEnabled && isConnected)
+            .sink { [weak self] isEnabled, isConnected in
+                self?.updateStatusIcon(active: isEnabled && isConnected)
             }
             .store(in: &cancellables)
     }
