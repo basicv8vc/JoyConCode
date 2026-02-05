@@ -72,14 +72,35 @@ struct MenuBarView: View {
                         color: joyConManager.isConnected ? .green : .secondary
                     )
 
-                    if !joyConManager.lastInputDescription.isEmpty {
+                    StatusRow(
+                        icon: "rectangle.3.group",
+                        title: "Background",
+                        status: joyConManager.backgroundEventsEnabled ? "Monitoring On" : "Monitoring Off",
+                        color: joyConManager.backgroundEventsEnabled ? .secondary : .orange
+                    )
+
+                    if !joyConManager.controllerProfilesDescription.isEmpty {
                         StatusRow(
-                            icon: "dot.radiowaves.left.and.right",
-                            title: "Last Input",
-                            status: joyConManager.lastInputDescription,
+                            icon: "info.circle",
+                            title: "Profile",
+                            status: joyConManager.controllerProfilesDescription,
                             color: .secondary
                         )
                     }
+
+                    StatusRow(
+                        icon: "waveform.path.ecg",
+                        title: "Raw Input",
+                        status: joyConManager.lastRawElementDescription.isEmpty ? "No events received" : joyConManager.lastRawElementDescription,
+                        color: .secondary
+                    )
+
+                    StatusRow(
+                        icon: "dot.radiowaves.left.and.right",
+                        title: "Last Input",
+                        status: joyConManager.lastInputDescription.isEmpty ? "—" : joyConManager.lastInputDescription,
+                        color: .secondary
+                    )
 
                     if !keyboardSimulator.lastKeyPressed.isEmpty {
                         StatusRow(
@@ -90,6 +111,20 @@ struct MenuBarView: View {
                         )
                     }
                 }
+            }
+
+            if joyConManager.hasUnknownMicroGamepadSide {
+                HStack(alignment: .top, spacing: 8) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundColor(.orange)
+                    Text("Some Joy-Con controllers couldn't be identified as (L)/(R). Those inputs default to Right, so your mapping may not match.")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(8)
+                .background(Color.orange.opacity(0.1))
+                .cornerRadius(8)
             }
 
             // Permissions Warnings
