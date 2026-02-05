@@ -180,9 +180,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     /// Setup Joy-Con handling callbacks
     private func setupJoyConHandling() {
-        joyConManager.onKeyChord = { [weak self] chord in
-            self?.keyboardSimulator.simulateKey(
+        joyConManager.onKeyChordEvent = { [weak self] chord, pressed in
+            self?.keyboardSimulator.handleJoyConChordEvent(
                 chord: chord,
+                pressed: pressed,
                 description: "Joy-Con: \(chord.displayString())"
             )
         }
