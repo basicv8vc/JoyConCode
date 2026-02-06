@@ -10,6 +10,7 @@ xcuserdata/
 .DS_Store
 build/
 *.xcodeproj/project.xcworkspace/
+.codex/
 
 ## Obj-C/Swift specific
 *.hmap
