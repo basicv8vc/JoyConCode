@@ -12,28 +12,22 @@ struct SettingsView: View {
             Text("Settings")
                 .font(.headline)
 
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Rumble Strength")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                HStack {
+                    Slider(value: $settings.joyConRumbleStrength, in: 0.1...1.0, step: 0.1)
+                    Text("\(String(format: "%.1f", settings.joyConRumbleStrength))")
+                        .font(.caption)
+                        .frame(width: 40)
+                }
+            }
+            .disabled(!settings.joyConRumbleEnabled)
+            .opacity(settings.joyConRumbleEnabled ? 1.0 : 0.6)
+
             // Joy-Con Settings
             VStack(alignment: .leading, spacing: 8) {
-                Text("Joy-Con")
-                    .font(.headline)
-
-                Toggle(isOn: $settings.joyConRumbleEnabled) {
-                    Text("Rumble Feedback")
-                }
-                .toggleStyle(.switch)
-
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Rumble Strength")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    HStack {
-                        Slider(value: $settings.joyConRumbleStrength, in: 0.1...1.0, step: 0.1)
-                        Text("\(String(format: "%.1f", settings.joyConRumbleStrength))")
-                            .font(.caption)
-                            .frame(width: 40)
-                    }
-                }
-
                 Button("Configure Joy-Con Mapping") {
                     showJoyConMapping = true
                 }
