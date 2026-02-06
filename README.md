@@ -59,6 +59,39 @@ You can trigger a short Joy-Con rumble on submit via Claude Code hooks. Add this
 }
 ```
 
+You can also rumble on `PermissionRequest` and `Stop` to make it obvious the agent is waiting for your input (this version only rumbles if JoyConCode is already running):
+
+```json
+{
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pgrep -x JoyConCode > /dev/null 2>&1 && open -g \"joyconcode://joycon/rumble\" || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pgrep -x JoyConCode > /dev/null 2>&1 && open -g \"joyconcode://joycon/rumble\" || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
 The `-g` flag prevents macOS from switching desktops when the hook runs.
 
 ## Configuration
