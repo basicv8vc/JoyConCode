@@ -337,7 +337,7 @@
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = JoyConCode/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 SlowFast AI. All rights reserved. MIT License.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 JoyConCode. MIT License. https://github.com/basicv8vc/JoyConCode";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -366,7 +366,7 @@
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = JoyConCode/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 SlowFast AI. All rights reserved. MIT License.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 JoyConCode. MIT License. https://github.com/basicv8vc/JoyConCode";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

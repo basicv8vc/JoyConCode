@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleGetInfoString</key>
-	<string>$(MARKETING_VERSION), Copyright © 2026 SlowFast AI. All rights reserved. MIT License.</string>
+	<string>$(MARKETING_VERSION), Copyright © 2026 JoyConCode. MIT License. https://github.com/basicv8vc/JoyConCode</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
@@ -35,7 +35,7 @@
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>JoyConCode uses Bluetooth to connect to Joy-Con controllers for input and haptic feedback.</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2026 SlowFast AI. All rights reserved. MIT License.</string>
+	<string>Copyright © 2026 JoyConCode. MIT License. https://github.com/basicv8vc/JoyConCode</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>CFBundleURLTypes</key>
